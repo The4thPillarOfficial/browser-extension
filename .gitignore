@@ -1,0 +1,12 @@
+node_modules
+package-lock.json
+temp
+.tmp
+.idea
+dist
+.sass-cache
+app/bower_components
+test/bower_components
+package
+app/scripts
+app/styles
