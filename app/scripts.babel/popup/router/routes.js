@@ -1,28 +1,55 @@
-import HomePage from './pages/Home.vue';
+import EntryPage from './pages/Entry.vue';
+import ShowSeedWordsPage from './pages/ShowSeedWords.vue';
+import RestoreFromSeedWordsPage from './pages/RestoreFromSeedWords.vue';
+
+import MyAccountPage from './pages/Home.vue';
 import SendTokenPage from './pages/SendToken.vue';
 import ReceiveTokenPage from './pages/ReceiveToken.vue';
 import FilesPage from './pages/Files.vue';
 import SettingsPage from './pages/Settings.vue';
 
-export default [
-    {
-        path: '/',
-        component: HomePage
-    },
-    {
-        path: '/send-token',
-        component: SendTokenPage
-    },
-    {
-        path: '/receive-token',
-        component: ReceiveTokenPage
-    },
-    {
-        path: '/files',
-        component: FilesPage
-    },
-    {
-        path: '/settings',
-        component: SettingsPage
-    }
-];
+export const RouteNames = {
+    ENTRY: 'entry',
+    SHOW_SEED_WORDS: 'show-seed-words',
+    RESTORE_FROM_SEED_WORDS: 'restore-from-seed-words',
+
+    MY_ACCOUNT: 'my-account',
+    SEND_TOKEN: 'send-token',
+    RECEIVE_TOKEN: 'receive-token',
+    FILES: 'files',
+    SETTINGS: 'settings',
+};
+
+const RoutePages = {
+    [RouteNames.ENTRY]: EntryPage,
+    [RouteNames.SHOW_SEED_WORDS]: ShowSeedWordsPage,
+    [RouteNames.RESTORE_FROM_SEED_WORDS]: RestoreFromSeedWordsPage,
+
+    [RouteNames.MY_ACCOUNT]: MyAccountPage,
+    [RouteNames.SEND_TOKEN]: SendTokenPage,
+    [RouteNames.RECEIVE_TOKEN]: ReceiveTokenPage,
+    [RouteNames.FILES]: FilesPage,
+    [RouteNames.SETTINGS]: SettingsPage,
+
+};
+
+// Build routes
+function buildRoutes() {
+    const routeNames = Object.keys(RouteNames).map(key => RouteNames[key]);
+
+    let routes = [];
+
+    routeNames.map(routeName => {
+        routes.push({
+            path: routeName === RouteNames.ENTRY ? '/' : '/' + routeName,
+            name: routeName,
+            component: RoutePages[routeName]
+        });
+    });
+
+    return routes;
+}
+
+let routes = buildRoutes();
+
+export default routes;

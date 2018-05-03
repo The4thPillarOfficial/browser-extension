@@ -1,7 +1,7 @@
 module.exports = {
     context: __dirname + '/app/scripts.babel/',
     entry: {
-        background: './background.js', // remove unused
+        background: './background.js',
         chromereload: './chromereload.js',
         contentscript: './contentscript.js',
         popup: './popup.js',
@@ -10,10 +10,10 @@ module.exports = {
     module: {
         rules: [{
             test: /\.js$/,
-            loader: 'babel-loader'
+            loader: 'babel-loader',
         }, {
             test: /\.vue$/,
             loader: 'vue-loader'
         }]
     }
-}
+};
