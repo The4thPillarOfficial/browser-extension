@@ -1,5 +1,5 @@
 export default class Settings {
 
-    constructor() {
+    constructor(settings) {
     }
 }

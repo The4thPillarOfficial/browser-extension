@@ -1,6 +1,8 @@
 import * as Actions from './constants';
 import Wallet from '../models/Wallet';
 import Account from '../models/Account';
+import InternalMessage from '../messages/InternalMessage';
+import * as InternalMessageTypes from '../messages/InternalMessageTypes';
 
 let actions = {
     [Actions.PUSH_ERROR]: ({commit}, error) => commit(Actions.PUSH_ERROR, error),
@@ -14,7 +16,7 @@ let actions = {
             await wallet.vault.create(password).then(() => {
 
                 // Save to store
-                dispatch(Actions.SET_WALLET, wallet).then(() => {
+                dispatch(Actions.SET_WALLET, {wallet: wallet}).then(() => {
                     dispatch(Actions.SET_SEED_WORDS).then(() => {
                         resolve();
                     });
@@ -25,12 +27,17 @@ let actions = {
         });
     },
 
-    [Actions.SET_WALLET]: ({commit}, wallet) => {
+    [Actions.SET_WALLET]: ({commit}, {wallet, updateInLocalStorage}) => {
         return new Promise(async (resolve, reject) => {
 
             // Set default account
             let accounts = await wallet.vault.getAccounts();
             wallet.defaultAccount = accounts[0];
+
+            // When we load wallet from local storage, we don't need to update this local storage again
+            if (updateInLocalStorage !== false) {
+                await InternalMessage.payload(InternalMessageTypes.UPDATE_WALLET, wallet).send();
+            }
 
             commit(Actions.SET_WALLET, wallet);
             resolve();
@@ -73,9 +80,40 @@ let actions = {
 
             // Restore wallet
             const wallet = new Wallet(state.wallet);
-            await wallet.vault.createNewVaultAndRestore(password, seedWords).then(() => {
-                dispatch(Actions.SET_WALLET, wallet).then(() => {
+            await wallet.vault.restore(password, seedWords).then(() => {
+                dispatch(Actions.SET_WALLET, {wallet: wallet}).then(() => {
                     resolve();
+                });
+            }).catch((error) => {
+                dispatch(Actions.PUSH_ERROR, error.message);
+            });
+        });
+    },
+
+    [Actions.LOAD_WALLET]: ({dispatch}) => {
+        return new Promise((resolve, reject) => {
+            InternalMessage.payload(InternalMessageTypes.LOAD_WALLET).send().then(wallet => {
+                dispatch(Actions.SET_WALLET, {
+                    wallet: new Wallet(wallet),
+                    updateInLocalStorage: false
+                }).then(() => {
+                    resolve();
+                });
+            });
+        });
+    },
+
+    [Actions.UNLOCK_WALLET]: ({state, dispatch}, password) => {
+        return new Promise((resolve, reject) => {
+
+            state.wallet.vault.unlock(password).then(() => {
+                state.wallet.vault.persistAllKeyrings().then(() => {
+                    dispatch(Actions.SET_WALLET, {
+                        wallet: state.wallet,
+                        updateInLocalStorage: false
+                    }).then(() => {
+                        resolve();
+                    });
                 });
             }).catch((error) => {
                 dispatch(Actions.PUSH_ERROR, error.message);
