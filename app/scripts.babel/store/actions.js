@@ -97,7 +97,17 @@ let actions = {
                     wallet: new Wallet(wallet),
                     updateInLocalStorage: false
                 }).then(() => {
-                    resolve();
+
+                    // Unlock if we have password
+                    let password = wallet.vault.password;
+
+                    if (password) {
+                        dispatch(Actions.UNLOCK_WALLET, password).then(() => {
+                            resolve();
+                        });
+                    } else {
+                        resolve();
+                    }
                 });
             });
         });

@@ -13,7 +13,9 @@ Vue.component('popup-header', PopupHeader);
 store.dispatch(Actions.LOAD_WALLET).then(() => {
 
     if (store.getters.isVaultExists && !store.getters.isUnlocked) {
-        router.push({name: RouteNames.UNLOCK})
+        router.push({name: RouteNames.UNLOCK});
+    } else if (store.getters.isVaultExists && store.getters.isUnlocked) {
+        router.push({name: RouteNames.MY_ACCOUNT});
     }
 
     new Vue({
