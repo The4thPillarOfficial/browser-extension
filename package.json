@@ -62,11 +62,13 @@
     "extension-streams": "^1.0.7",
     "mm-vault": "^2.1.4",
     "qrcode-generator": "^1.4.0",
+    "random-string": "^0.2.0",
     "vue": "^2.5.13",
     "vue-loader": "^14.1.1",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.13",
     "vuex": "^3.0.1",
+    "web3": "^0.20.1",
     "webpack": "^3.11.0",
     "webpack-stream": "^4.0.1"
   }

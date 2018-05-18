@@ -54,5 +54,8 @@
     },
     "default_title": "The 4th Pillar Plugin",
     "default_popup": "popup.html"
-  }
+  },
+  "web_accessible_resources": [
+    "scripts/inject.js"
+  ]
 }

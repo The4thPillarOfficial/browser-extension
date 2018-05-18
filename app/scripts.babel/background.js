@@ -2,7 +2,7 @@ import {LocalStream} from 'extension-streams';
 import * as InternalMessageTypes from './messages/InternalMessageTypes';
 import StorageService from './services/StorageService';
 
-export default class Background {
+class Background {
 
     constructor() {
         this.setupInternalMessaging();
@@ -32,6 +32,10 @@ export default class Background {
             case InternalMessageTypes.LOAD_WALLET:
                 Background.loadWallet(sendResponse);
                 break;
+
+            case InternalMessageTypes.GET_DEFAULT_ACCOUNT:
+                Background.getDefaultAccount(sendResponse);
+                break;
         }
     }
 
@@ -57,6 +61,17 @@ export default class Background {
             sendResponse(wallet);
         });
     }
+
+    /**
+     * Return default account from saved wallet
+     *
+     * @param sendResponse
+     */
+    static getDefaultAccount(sendResponse) {
+        Background.loadWallet(wallet => {
+            sendResponse(wallet.defaultAccount);
+        });
+    }
 }
 
-const background = new Background();
+new Background();
