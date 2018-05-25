@@ -1,13 +1,20 @@
 import NetworkMessageService from '../services/NetworkMessageService';
+import EthService from '../services/EthService';
 
 let stream = null;
+let opts = null;
 
 export default class InpageProvider {
 
-    constructor(_stream) {
+    constructor(_stream, _opts) {
         stream = _stream;
+        opts = _opts;
 
         NetworkMessageService.subscribe(stream);
+
+        // Set eth provider
+        const ethService = new EthService(opts);
+        this.eth = ethService.getProvider();
     }
 
     /**
@@ -17,6 +24,8 @@ export default class InpageProvider {
      * @param cb
      */
     sendAsync(payload, cb) {
+        console.log(payload);
+        this.eth.sendAsync(payload, cb);
     }
 
     /**
@@ -30,18 +39,23 @@ export default class InpageProvider {
 
         switch (payload.method) {
             case 'eth_accounts':
+                result = opts.defaultAccount ? [opts.defaultAccount] : [];
                 break;
 
             case 'eth_coinbase':
+                result = opts.defaultAccount || null;
                 break;
 
             case 'eth_uninstallFilter':
+                this.sendAsync(payload, () => {});
                 break;
 
             case 'net_version':
+                result = opts.defaultNetwork || null;
                 break;
 
             default:
+                throw new Error('The4thPillar browser extension Web3 object does not support synchronous methods like ' + payload.method + ' without a callback parameter.');
         }
 
         return {

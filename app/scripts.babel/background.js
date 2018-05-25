@@ -36,6 +36,10 @@ class Background {
             case InternalMessageTypes.GET_DEFAULT_ACCOUNT:
                 Background.getDefaultAccount(sendResponse);
                 break;
+
+            case InternalMessageTypes.GET_DEFAULT_NETWORK:
+                Background.getDefaultNetwork(sendResponse);
+                break;
         }
     }
 
@@ -70,6 +74,17 @@ class Background {
     static getDefaultAccount(sendResponse) {
         Background.loadWallet(wallet => {
             sendResponse(wallet.defaultAccount);
+        });
+    }
+
+    /**
+     * Return default network from saved wallet
+     *
+     * @param sendResponse
+     */
+    static getDefaultNetwork(sendResponse) {
+        Background.loadWallet(wallet => {
+            sendResponse(wallet.settings.defaultNetwork);
         });
     }
 }

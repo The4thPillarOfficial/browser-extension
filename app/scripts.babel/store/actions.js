@@ -99,7 +99,7 @@ let actions = {
                 }).then(() => {
 
                     // Unlock if we have password
-                    let password = wallet.vault.password;
+                    let password = wallet ? wallet.vault.password : false;
 
                     if (password) {
                         dispatch(Actions.UNLOCK_WALLET, password).then(() => {

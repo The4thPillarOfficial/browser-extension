@@ -15,7 +15,7 @@ class Inject {
             // Export global web3
             if (msg && msg.hasOwnProperty('type') && msg.type === NetworkMessageTypes.PUSH_THE4THPILLAR) {
 
-                const web3 = new Web3(new InpageProvider(stream));
+                const web3 = new Web3(new InpageProvider(stream, msg.payload));
 
                 web3.setProvider = function () {
                     console.log('The4thPillar browser extension - overrode web3.setProvider');

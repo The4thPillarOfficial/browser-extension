@@ -25,8 +25,9 @@ class Content {
 
         stream.onSync(async () => {
             const defaultAccount = await Content.getDefaultAccount();
+            const defaultNetwork = await Content.getDefaultNetwork();
 
-            stream.send(NetworkMessage.payload(NetworkMessageTypes.PUSH_THE4THPILLAR, {defaultAccount}), PairingTags.INJECTED);
+            stream.send(NetworkMessage.payload(NetworkMessageTypes.PUSH_THE4THPILLAR, {defaultAccount, defaultNetwork}), PairingTags.INJECTED);
 
             isReady = true;
         });
@@ -108,6 +109,13 @@ class Content {
         } else {
             return promise;
         }
+    }
+
+    /**
+     * Method return default network
+     */
+    static getDefaultNetwork() {
+        return InternalMessage.payload(InternalMessageTypes.GET_DEFAULT_NETWORK).send();
     }
 }
 
