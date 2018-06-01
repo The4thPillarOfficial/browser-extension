@@ -13,7 +13,7 @@ export default class InpageProvider {
         NetworkMessageService.subscribe(stream);
 
         // Set eth provider
-        const ethService = new EthService(opts);
+        const ethService = new EthService(stream, opts);
         this.eth = ethService.getProvider();
     }
 
@@ -24,7 +24,6 @@ export default class InpageProvider {
      * @param cb
      */
     sendAsync(payload, cb) {
-        console.log(payload);
         this.eth.sendAsync(payload, cb);
     }
 

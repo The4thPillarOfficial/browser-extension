@@ -130,6 +130,16 @@ let actions = {
             });
         });
     },
+
+    [Actions.PUSH_PROMPT]: ({state, commit}, prompt) => {
+        return new Promise((resolve, reject) => {
+            if (state.prompt) {
+                state.prompt.responder(null);
+            }
+            commit(Actions.PUSH_PROMPT, prompt);
+            resolve();
+        });
+    },
 };
 
 export default actions;

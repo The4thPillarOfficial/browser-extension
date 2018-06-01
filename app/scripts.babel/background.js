@@ -1,6 +1,9 @@
 import {LocalStream} from 'extension-streams';
 import * as InternalMessageTypes from './messages/InternalMessageTypes';
 import StorageService from './services/StorageService';
+import SignatureService from './services/SignatureService';
+
+let prompt = null;
 
 class Background {
 
@@ -39,6 +42,18 @@ class Background {
 
             case InternalMessageTypes.GET_DEFAULT_NETWORK:
                 Background.getDefaultNetwork(sendResponse);
+                break;
+
+            case InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE:
+                Background.requestPersonalMessageSignature(message.payload, sendResponse);
+                break;
+
+            case InternalMessageTypes.SET_PROMPT:
+                Background.setPrompt(message.payload, sendResponse);
+                break;
+
+            case InternalMessageTypes.GET_PROMPT:
+                Background.getPrompt(sendResponse);
                 break;
         }
     }
@@ -86,6 +101,38 @@ class Background {
         Background.loadWallet(wallet => {
             sendResponse(wallet.settings.defaultNetwork);
         });
+    }
+
+    /**
+     * Return signed personal message
+     *
+     * @param payload
+     * @param sendResponse
+     */
+    static requestPersonalMessageSignature(payload, sendResponse) {
+        Background.loadWallet(wallet => {
+            SignatureService.signPersonalMessage(wallet, payload, sendResponse);
+        });
+    }
+
+    /**
+     * Set Prompt
+     *
+     * @param payload
+     * @param sendResponse
+     */
+    static setPrompt(payload, sendResponse) {
+        prompt = payload;
+        sendResponse(true);
+    }
+
+    /**
+     * Return prompt
+     *
+     * @param sendResponse
+     */
+    static getPrompt(sendResponse) {
+        sendResponse(prompt);
     }
 }
 

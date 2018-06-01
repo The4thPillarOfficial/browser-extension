@@ -65,6 +65,10 @@ class Content {
             case NetworkMessageTypes.GET_DEFAULT_ACCOUNT:
                 Content.getDefaultAccount(nonSyncMessage);
                 break;
+
+            case NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE:
+                Content.requestPersonalMessageSignature(nonSyncMessage);
+                break;
         }
     }
 
@@ -116,6 +120,17 @@ class Content {
      */
     static getDefaultNetwork() {
         return InternalMessage.payload(InternalMessageTypes.GET_DEFAULT_NETWORK).send();
+    }
+
+    /**
+     * Method return signed personal message
+     *
+     * @param message
+     */
+    static requestPersonalMessageSignature(message) {
+        InternalMessage.payload(InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE, message.payload).send().then(res => {
+            this.respond(message, res);
+        });
     }
 }
 

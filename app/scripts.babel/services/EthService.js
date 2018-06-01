@@ -1,14 +1,20 @@
 import ZeroClientProvider from 'web3-provider-engine/zero';
 import createProvider from 'eth-json-rpc-infura/src/createProvider';
 import ProviderSubprovider from 'web3-provider-engine/subproviders/provider';
+import * as NetworkMessageTypes from '../messages/NetworkMessageTypes'
+import NetworkMessageService from './NetworkMessageService';
 import NetworkTypes from '../utils/NetworkTypes';
 import config from '../../manifest.json';
 
+let stream = null;
+
 export default class EthService {
 
-    constructor(opts) {
-        this.defaultAccount = opts.defaultAccount;
-        this.defaultNetwork = opts.defaultNetwork;
+    constructor(_stream, _opts) {
+        this.defaultAccount = _opts.defaultAccount;
+        this.defaultNetwork = _opts.defaultNetwork;
+
+        stream = _stream;
 
         this.setProvider();
     }
@@ -57,6 +63,8 @@ export default class EthService {
             return cb(new Error('The4thPillar browser extension Message Signature: from field is required.'))
         }
 
-        // TODO:: Implement personal signing
+        NetworkMessageService.send(stream, NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE, msgParams).then(res => {
+            cb(null, res);
+        });
     }
 }

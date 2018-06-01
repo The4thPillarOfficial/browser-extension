@@ -61,6 +61,7 @@
   "dependencies": {
     "css-loader": "^0.28.9",
     "eth-json-rpc-infura": "^3.1.2",
+    "ethereumjs-util": "^5.2.0",
     "extension-streams": "^1.0.7",
     "mm-vault": "^2.1.4",
     "qrcode-generator": "^1.4.0",

@@ -6,3 +6,4 @@ export const SET_SEED_WORDS = 'setSeedWords';
 export const RESTORE_WALLET = 'restoreWallet';
 export const LOAD_WALLET = 'loadWallet';
 export const UNLOCK_WALLET = 'unlockWallet';
+export const PUSH_PROMPT = 'pushPrompt';

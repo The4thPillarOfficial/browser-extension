@@ -2,7 +2,8 @@ let state = {
     wallet: {},
     seedWords: null,
 
-    errors: []
+    errors: [],
+    prompt: null,
 };
 
 export default state;

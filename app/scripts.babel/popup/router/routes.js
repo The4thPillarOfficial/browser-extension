@@ -9,6 +9,8 @@ import ReceiveTokenPage from './pages/ReceiveToken.vue';
 import FilesPage from './pages/Files.vue';
 import SettingsPage from './pages/Settings.vue';
 
+import RequestPersonalMessageSignature from './pages/prompts/RequestPersonalMessageSignature.vue';
+
 export const RouteNames = {
     ENTRY: 'entry',
     SHOW_SEED_WORDS: 'show-seed-words',
@@ -20,6 +22,8 @@ export const RouteNames = {
     RECEIVE_TOKEN: 'receive-token',
     FILES: 'files',
     SETTINGS: 'settings',
+
+    PROMPT_REQUEST_PERSONAL_MESSAGE_SIGNATURE: 'prompt_requestPersonalMessageSignature',
 };
 
 const RoutePages = {
@@ -34,6 +38,7 @@ const RoutePages = {
     [RouteNames.FILES]: FilesPage,
     [RouteNames.SETTINGS]: SettingsPage,
 
+    [RouteNames.PROMPT_REQUEST_PERSONAL_MESSAGE_SIGNATURE]: RequestPersonalMessageSignature,
 };
 
 // Build routes
