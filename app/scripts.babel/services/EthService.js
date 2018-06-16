@@ -63,8 +63,10 @@ export default class EthService {
             return cb(new Error('The4thPillar browser extension Message Signature: from field is required.'))
         }
 
-        NetworkMessageService.send(stream, NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE, msgParams).then(res => {
-            cb(null, res);
-        });
+        if (stream) {
+            NetworkMessageService.send(stream, NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE, msgParams).then(res => {
+                cb(null, res);
+            });
+        }
     }
 }

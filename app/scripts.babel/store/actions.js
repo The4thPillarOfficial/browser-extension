@@ -3,6 +3,10 @@ import Wallet from '../models/Wallet';
 import Account from '../models/Account';
 import InternalMessage from '../messages/InternalMessage';
 import * as InternalMessageTypes from '../messages/InternalMessageTypes';
+import Web3 from 'web3';
+import store from '../store';
+import InpageProvider from '../utils/InpageProvider';
+import TokenContract from '../utils/token/TokenContract';
 
 let actions = {
     [Actions.PUSH_ERROR]: ({commit}, error) => commit(Actions.PUSH_ERROR, error),
@@ -82,7 +86,9 @@ let actions = {
             const wallet = new Wallet(state.wallet);
             await wallet.vault.restore(password, seedWords).then(() => {
                 dispatch(Actions.SET_WALLET, {wallet: wallet}).then(() => {
-                    resolve();
+                    dispatch(Actions.SET_WEB3_PROVIDER).then(() => {
+                        resolve();
+                    });
                 });
             }).catch((error) => {
                 dispatch(Actions.PUSH_ERROR, error.message);
@@ -122,7 +128,9 @@ let actions = {
                         wallet: state.wallet,
                         updateInLocalStorage: false
                     }).then(() => {
-                        resolve();
+                        dispatch(Actions.SET_WEB3_PROVIDER).then(() => {
+                            resolve();
+                        });
                     });
                 });
             }).catch((error) => {
@@ -138,6 +146,61 @@ let actions = {
             }
             commit(Actions.PUSH_PROMPT, prompt);
             resolve();
+        });
+    },
+
+    [Actions.SET_WEB3_PROVIDER]: ({state, commit, dispatch}) => {
+        return new Promise((resolve, reject) => {
+
+            let defaultAccount = store.getters.defaultAccount;
+            let defaultNetwork = store.getters.defaultNetwork;
+
+            let web3 = new Web3(new InpageProvider(null, {defaultAccount, defaultNetwork}));
+
+            // Set default account
+            web3.eth.defaultAccount = defaultAccount;
+
+            commit(Actions.SET_WEB3_PROVIDER, web3);
+
+            dispatch(Actions.SET_TOKEN).then(() => {
+                resolve();
+            });
+        });
+    },
+
+    [Actions.SET_TOKEN]: ({state, commit}) => {
+        return new Promise(async (resolve, reject) => {
+
+            const token = await TokenContract.getTokenContract(state.web3);
+
+            let tokenValues = {};
+            tokenValues.instance = () => token;
+
+            // Store token decimals
+            token.decimals((err, decimals) => {
+                if (!err) {
+                    tokenValues.decimals = parseInt(decimals, 10);
+
+                    // Divisor
+                    let divisor = new state.web3.BigNumber(10).toPower(tokenValues.decimals);
+
+                    // Set the account holder balance
+                    token.balanceOf(state.wallet.defaultAccount, (err, balance) => {
+                        if (!err) {
+                            tokenValues.accountBalance = balance.div(divisor).toString();
+
+                            // Store token symbol
+                            token.symbol((err, symbol) => {
+                                if (!err) {
+                                    tokenValues.symbol = symbol.toString();
+                                        commit(Actions.SET_TOKEN, tokenValues);
+                                        resolve();
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
     },
 };

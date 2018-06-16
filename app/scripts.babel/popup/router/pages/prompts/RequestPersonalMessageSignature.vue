@@ -17,7 +17,7 @@
 <script>
     import {mapState} from 'vuex'
     import NotificationService from '../../../../services/NotificationService';
-    import {Helper} from '../../../../utils/Helper';
+    import Helper from '../../../../utils/Helper';
 
     export default {
         computed: {

@@ -1,6 +1,6 @@
 import ethUtil from 'ethereumjs-util';
 
-export class Helper {
+export default class Helper {
 
     /**
      * Method convert HEX string to UTF-8

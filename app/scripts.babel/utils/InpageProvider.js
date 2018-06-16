@@ -10,7 +10,9 @@ export default class InpageProvider {
         stream = _stream;
         opts = _opts;
 
-        NetworkMessageService.subscribe(stream);
+        if (stream) {
+            NetworkMessageService.subscribe(stream);
+        }
 
         // Set eth provider
         const ethService = new EthService(stream, opts);

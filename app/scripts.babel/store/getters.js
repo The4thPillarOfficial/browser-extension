@@ -3,6 +3,7 @@ let getters = {
     defaultNetwork: state => state.wallet.settings.defaultNetwork,
     isUnlocked: state => state.wallet.vault.memStore.getState().isUnlocked,
     isVaultExists: state => !!state.wallet.vault.store.getState().vault,
+    web3: state => state.web3,
 };
 
 export default getters;

@@ -7,3 +7,5 @@ export const RESTORE_WALLET = 'restoreWallet';
 export const LOAD_WALLET = 'loadWallet';
 export const UNLOCK_WALLET = 'unlockWallet';
 export const PUSH_PROMPT = 'pushPrompt';
+export const SET_WEB3_PROVIDER = 'setEthProvider';
+export const SET_TOKEN = 'setToken';
