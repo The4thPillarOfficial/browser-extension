@@ -4,6 +4,8 @@ import ProviderSubprovider from 'web3-provider-engine/subproviders/provider';
 import * as NetworkMessageTypes from '../messages/NetworkMessageTypes'
 import NetworkMessageService from './NetworkMessageService';
 import NetworkTypes from '../utils/NetworkTypes';
+import InternalMessage from '../messages/InternalMessage';
+import * as InternalMessageTypes from '../messages/InternalMessageTypes';
 import config from '../../manifest.json';
 
 let stream = null;
@@ -65,6 +67,10 @@ export default class EthService {
 
         if (stream) {
             NetworkMessageService.send(stream, NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE, msgParams).then(res => {
+                cb(null, res);
+            });
+        } else {
+            InternalMessage.payload(InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE, msgParams).send().then(res => {
                 cb(null, res);
             });
         }
