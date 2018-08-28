@@ -66,6 +66,7 @@
     "ethjs": "^0.4.0",
     "extension-streams": "^1.0.7",
     "mm-vault": "^2.1.4",
+    "node-rsa": "^1.0.1",
     "qrcode-generator": "^1.4.0",
     "random-string": "^0.2.0",
     "vue": "^2.5.13",

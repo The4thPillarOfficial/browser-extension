@@ -17,12 +17,16 @@ let actions = {
 
             // Create wallet
             const wallet = new Wallet(state.wallet);
-            await wallet.vault.create(password).then(() => {
-
-                // Save to store
-                dispatch(Actions.SET_WALLET, {wallet: wallet}).then(() => {
-                    dispatch(Actions.SET_SEED_WORDS).then(() => {
-                        resolve();
+            wallet.vault.create(password).then((result) => {
+                // Generate RSA key
+                dispatch(Actions.GENERATE_RSA_KEY_PAIR, wallet).then((wallet) => {
+                    // Save to store
+                    dispatch(Actions.SET_WALLET, {wallet: wallet}).then(() => {
+                        dispatch(Actions.SET_SEED_WORDS).then(() => {
+                            dispatch(Actions.SET_WEB3_PROVIDER).then(() => {
+                                resolve();
+                            });
+                        });
                     });
                 });
             }).catch((error) => {
@@ -31,12 +35,24 @@ let actions = {
         });
     },
 
-    [Actions.SET_WALLET]: ({commit}, {wallet, updateInLocalStorage}) => {
+    [Actions.SET_WALLET]: ({commit, dispatch}, {wallet, updateInLocalStorage}) => {
         return new Promise(async (resolve, reject) => {
 
             // Set default account
-            let accounts = await wallet.vault.getAccounts();
-            wallet.defaultAccount = accounts[0];
+            const accounts = await wallet.vault.getAccounts();
+
+            if (accounts.length) {
+                wallet.defaultAccount = accounts[0];
+                updateInLocalStorage = true;
+            }
+
+            console.log(wallet);
+
+            // Send public key to platform
+            if (!wallet.isPublicKeySavedOnPlatform && wallet.vault.memStore.getState().isUnlocked) {
+                await wallet.sendPublicKeyToPlatform();
+                updateInLocalStorage = true;
+            }
 
             // When we load wallet from local storage, we don't need to update this local storage again
             if (updateInLocalStorage !== false) {
@@ -122,15 +138,13 @@ let actions = {
     [Actions.UNLOCK_WALLET]: ({state, dispatch}, password) => {
         return new Promise((resolve, reject) => {
 
-            state.wallet.vault.unlock(password).then(() => {
-                state.wallet.vault.persistAllKeyrings().then(() => {
-                    dispatch(Actions.SET_WALLET, {
-                        wallet: state.wallet,
-                        updateInLocalStorage: false
-                    }).then(() => {
-                        dispatch(Actions.SET_WEB3_PROVIDER).then(() => {
-                            resolve();
-                        });
+            state.wallet.vault.unlock(password).then((res) => {
+                dispatch(Actions.SET_WALLET, {
+                    wallet: state.wallet,
+                    updateInLocalStorage: false
+                }).then(() => {
+                    dispatch(Actions.SET_WEB3_PROVIDER).then(() => {
+                        resolve();
                     });
                 });
             }).catch((error) => {
@@ -201,6 +215,13 @@ let actions = {
                     });
                 }
             });
+        });
+    },
+
+    [Actions.GENERATE_RSA_KEY_PAIR]: ({state, commit}, wallet) => {
+        return new Promise((resolve, reject) => {
+            wallet.generateRsaKeyPair();
+            resolve(wallet);
         });
     },
 };
