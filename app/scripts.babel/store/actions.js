@@ -7,6 +7,7 @@ import Web3 from 'web3';
 import store from '../store';
 import InpageProvider from '../utils/InpageProvider';
 import TokenContract from '../utils/token/TokenContract';
+import DocumentContract from '../utils/document/DocumentContract';
 
 let actions = {
     [Actions.PUSH_ERROR]: ({commit}, error) => commit(Actions.PUSH_ERROR, error),
@@ -45,8 +46,6 @@ let actions = {
                 wallet.defaultAccount = accounts[0];
                 updateInLocalStorage = true;
             }
-
-            console.log(wallet);
 
             // Send public key to platform
             if (!wallet.isPublicKeySavedOnPlatform && wallet.vault.memStore.getState().isUnlocked) {
@@ -177,7 +176,9 @@ let actions = {
             commit(Actions.SET_WEB3_PROVIDER, web3);
 
             dispatch(Actions.SET_TOKEN).then(() => {
-                resolve();
+                dispatch(Actions.SET_DOCUMENT).then(() => {
+                    resolve();
+                });
             });
         });
     },
@@ -214,6 +215,24 @@ let actions = {
                         }
                     });
                 }
+            });
+        });
+    },
+
+    [Actions.SET_DOCUMENT]: ({state, commit}) => {
+        return new Promise(async (resolve, reject) => {
+
+            const contract = await DocumentContract.getDocumentContract(state.web3);
+            const document = new DocumentContract(contract);
+
+            let documentValues = {};
+            documentValues.instance = document;
+
+            document.getDocumentsInRange(state.wallet.defaultAccount, 0).then(documents => {
+                documentValues.documents = documents.reverse();
+
+                commit(Actions.SET_DOCUMENT, documentValues);
+                resolve();
             });
         });
     },

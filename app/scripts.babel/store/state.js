@@ -11,7 +11,11 @@ let state = {
         decimals: null,
         symbol: null,
         accountBalance: null,
-    }
+    },
+    document: {
+        instance: null,
+        documents: false,
+    },
 };
 
 export default state;

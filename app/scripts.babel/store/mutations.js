@@ -13,6 +13,10 @@ let mutations = {
         state.token.accountBalance = token.accountBalance;
         state.token.symbol = token.symbol;
     },
+    [Mutations.SET_DOCUMENT]: (state, document) => {
+        state.document.instance = document.instance;
+        state.document.documents = document.documents;
+    },
 };
 
 export default mutations;
