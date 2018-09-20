@@ -7,8 +7,7 @@
             <h1>Unlock your wallet</h1>
             <!-- Password inputs -->
             <div class="form-group">
-                <label for="password">Password</label>
-                <input id="password" type="password" v-model="password"/>
+                <input id="password" type="password" placeholder="Password" v-model="password"/>
             </div>
             <!-- Show errors -->
             <div v-if="errors.length" class="form-group">
@@ -17,11 +16,13 @@
                 </div>
             </div>
             <!-- Submit -->
-            <div class="form-group">
+            <div class="form-group text-center">
                 <button type="submit" class="btn" @click="unlock">Unlock</button>
             </div>
             <!-- Restore from seed words -->
-            <a @click="restoreFromSeedWords">Restore from seed words</a>
+            <div class="form-group text-center f-upper">
+                <a @click="restoreFromSeedWords">Restore from seed words</a>
+            </div>
         </div>
     </div>
 </template>

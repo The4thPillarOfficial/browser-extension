@@ -5,10 +5,11 @@
             <h1>Received Files</h1>
 
             <div class="documents">
-                <div v-for="document in document.documents">
+                <div v-for="document in document.documents" class="document">
                     Sender: {{ document.sender }}<br/>
                     Name: {{ document.name }}<br/>
                     Description: {{ document.description }}<br/>
+                    Type: {{ document.docType }}<br/>
                     <button @click="download(document)">Download</button>
                 </div>
             </div>

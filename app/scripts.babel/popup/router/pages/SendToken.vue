@@ -9,11 +9,8 @@
             </div>
             <!-- Inputs -->
             <div class="form-group">
-                <label for="recipient">Recipient Address:</label>
-                <input id="recipient" type="text" v-model="to" @change="calculateFee"/>
-                <hr>
-                <label for="amount">Amount:</label>
-                <input id="amount" type="number" step="any" min="0.000000000000000001" v-model.number="value"/>
+                <input id="recipient" type="text" placeholder="Recipient Address" v-model="to" @change="calculateFee"/>
+                <input id="amount" type="number" step="any" min="0.000000000000000001" placeholder="Amount" v-model.number="value"/>
             </div>
             <!-- Totals -->
             <div class="totals">
@@ -27,7 +24,7 @@
                 </div>
             </div>
             <!-- Buttons -->
-            <div class="form-group">
+            <div class="form-group text-center">
                 <button class="btn" @click="send">Send</button>
             </div>
         </div>

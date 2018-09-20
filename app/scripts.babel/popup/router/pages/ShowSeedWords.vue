@@ -13,7 +13,7 @@
             </div>
 
             <!-- Submit -->
-            <div class="form-group">
+            <div class="form-group text-center">
                 <button type="submit" class="btn" @click="next">I wrote it down</button>
             </div>
         </div>
@@ -39,10 +39,14 @@
                 // Clear seed words from store
                 this[Actions.SET_SEED_WORDS](null);
 
-                this.$router.push({name: RouteNames.MY_ACCOUNT});
+                // Set web3 provider and then redirect to My Account
+                this[Actions.SET_WEB3_PROVIDER]().then(() => {
+                    this.$router.push({name: RouteNames.MY_ACCOUNT});
+                });
             },
             ...mapActions([
                 Actions.SET_SEED_WORDS,
+                Actions.SET_WEB3_PROVIDER,
             ])
         }
     }

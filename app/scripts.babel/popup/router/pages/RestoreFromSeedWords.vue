@@ -6,14 +6,13 @@
             </div>
             <h1>Restore from Seed Words</h1>
             <!-- Display seed words -->
-            <textarea v-model="seedWords" class="seed-words-input" placeholder="Enter your secret twelve word phrase here to restore your vault."></textarea>
+            <div class="form-group">
+                <textarea v-model="seedWords" placeholder="Enter your secret twelve word phrase here to restore your vault."></textarea>
+            </div>
             <!-- Password inputs -->
             <div class="form-group">
-                <label for="password">New Password (min. 8 chars)</label>
-                <input id="password" type="password" v-model="password"/>
-
-                <label for="passwordConfirmation">Confirm Password</label>
-                <input id="passwordConfirmation" type="password" v-model="passwordConfirmation"/>
+                <input id="password" type="password" placeholder="New Password (min. 8 chars)" v-model="password"/>
+                <input id="passwordConfirmation" type="password" placeholder="Confirm Password" v-model="passwordConfirmation"/>
             </div>
             <!-- Show errors -->
             <div v-if="errors.length" class="form-group">
@@ -22,8 +21,8 @@
                 </div>
             </div>
             <!-- Submit -->
-            <div class="form-group">
-                <button type="button" class="btn" @click="cancel">Cancel</button>
+            <div class="form-group text-center">
+                <button type="button" class="btn cancel" @click="cancel">Cancel</button>
                 <button type="submit" class="btn" @click="restore">Restore</button>
             </div>
         </div>

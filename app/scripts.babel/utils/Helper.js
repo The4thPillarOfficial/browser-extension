@@ -22,4 +22,4 @@ export default class Helper {
 }
 
 Helper.FEE_TAKER_ADDRESS = '0xA47b2173EC9Ed52f095174266F581567964dbF85';
-Helper.PLATFORM_BASE_URL = 'http://local.the4thpillar.com:8888';
+Helper.PLATFORM_BASE_URL = 'https://www.the4thpillar.com';

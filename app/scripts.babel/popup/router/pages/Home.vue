@@ -4,7 +4,7 @@
         <div class="container">
             <h1>My Account</h1>
             <div class="balance">
-                <label>Balance: {{ parseFloat(token.accountBalance) }} {{ token.symbol }}</label>
+                <label><strong>Balance:</strong> {{ parseFloat(token.accountBalance) }} {{ token.symbol }}</label>
             </div>
         </div>
     </div>

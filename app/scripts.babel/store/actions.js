@@ -24,9 +24,7 @@ let actions = {
                     // Save to store
                     dispatch(Actions.SET_WALLET, {wallet: wallet}).then(() => {
                         dispatch(Actions.SET_SEED_WORDS).then(() => {
-                            dispatch(Actions.SET_WEB3_PROVIDER).then(() => {
-                                resolve();
-                            });
+                            resolve();
                         });
                     });
                 });

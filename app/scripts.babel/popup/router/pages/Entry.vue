@@ -7,11 +7,8 @@
             <h1>Setup your wallet</h1>
             <!-- Password inputs -->
             <div class="form-group">
-                <label for="password">New Password (min. 8 chars)</label>
-                <input id="password" type="password" v-model="password"/>
-
-                <label for="passwordConfirmation">Confirm Password</label>
-                <input id="passwordConfirmation" type="password" v-model="passwordConfirmation"/>
+                <input id="password" type="password"placeholder="New Password (min. 8 chars)" v-model="password"/>
+                <input id="passwordConfirmation" type="password" placeholder="Confirm Password" v-model="passwordConfirmation"/>
             </div>
             <!-- Show errors -->
             <div v-if="errors.length" class="form-group">
@@ -20,11 +17,13 @@
                 </div>
             </div>
             <!-- Submit -->
-            <div class="form-group">
+            <div class="form-group text-center">
                 <button type="submit" class="btn" @click="create">Create</button>
             </div>
             <!-- Restore from seed words -->
-            <a @click="restoreFromSeedWords">Restore from seed words</a>
+            <div class="form-group text-center f-upper">
+                <a @click="restoreFromSeedWords">Restore from seed words</a>
+            </div>
         </div>
     </div>
 </template>

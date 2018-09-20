@@ -70,31 +70,36 @@ export default class DocumentContract {
      */
     async getDocumentsInRange(receiver, from, to = null) {
         let documents = [];
-        let lastDocumentIndex = await this.getLastDocumentIndex(receiver);
 
-        // Check if range is not exceeded
-        if (to > lastDocumentIndex || to === null) {
-            to = lastDocumentIndex;
-        }
+        try {
+            let lastDocumentIndex = await this.getLastDocumentIndex(receiver);
 
-        if (from > lastDocumentIndex) {
-            from = lastDocumentIndex;
-        }
-
-        for (let i = from; i <= to; i++) {
-            const document = await this.getDocument(receiver, i);
-
-            // If document is not deleted
-            if (document[1]) {
-                documents.push({
-                    sender: document[0],
-                    link: document[1],
-                    name: document[2],
-                    description: document[3],
-                    docType: document[4],
-                    openedAt: document[5],
-                });
+            // Check if range is not exceeded
+            if (to > lastDocumentIndex || to === null) {
+                to = lastDocumentIndex;
             }
+
+            if (from > lastDocumentIndex) {
+                from = lastDocumentIndex;
+            }
+
+            for (let i = from; i <= to; i++) {
+                const document = await this.getDocument(receiver, i);
+
+                // If document is not deleted
+                if (document[1]) {
+                    documents.push({
+                        sender: document[0],
+                        link: document[1],
+                        name: document[2],
+                        description: document[3],
+                        docType: document[4],
+                        openedAt: document[5],
+                    });
+                }
+            }
+        } catch (err) {
+            console.error(err);
         }
 
         return documents;

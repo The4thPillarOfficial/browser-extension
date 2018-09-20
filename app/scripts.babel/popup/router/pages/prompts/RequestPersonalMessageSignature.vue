@@ -6,9 +6,9 @@
                 <label for="message">Message:</label>
                 <textarea id="message">{{ getMessage() }}</textarea>
             </div>
-            <div class="form-group">
+            <div class="form-group text-center">
+                <button class="btn cancel" @click="denied">Cancel</button>
                 <button class="btn" @click="accepted">Sign</button>
-                <button class="btn" @click="denied">Cancel</button>
             </div>
         </div>
     </div>
