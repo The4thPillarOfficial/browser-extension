@@ -66,10 +66,13 @@ gulp.task('styles', () => {
 });
 
 gulp.task('html', ['styles'], () => {
+    gulp.src('app/scripts/inject.js')
+        .pipe(gulp.dest('dist/scripts'));
+
     return gulp.src('app/*.html')
         .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
         .pipe($.sourcemaps.init())
-        .pipe($.if('*.js', $.uglify()))
+        .pipe($.if('/\.js$/', $.uglify()))
         .pipe($.if('*.css', $.cleanCss({compatibility: '*'})))
         .pipe($.sourcemaps.write())
         .pipe($.if('*.html', $.htmlmin({
@@ -94,7 +97,7 @@ gulp.task('chromeManifest', () => {
         }))
         .pipe($.if('*.css', $.cleanCss({compatibility: '*'})))
         .pipe($.if('*.js', $.sourcemaps.init()))
-        .pipe($.if('*.js', $.uglify()))
+        .pipe($.if('/\.js$/', $.uglify()))
         .pipe($.if('*.js', $.sourcemaps.write('.')))
         .pipe(gulp.dest('dist'));
 });
@@ -149,7 +152,7 @@ gulp.task('package', function() {
 
 gulp.task('build', (cb) => {
     runSequence(
-        'lint', 'babel', 'chromeManifest',
+        'lint', 'babel', 'styles', 'chromeManifest',
         ['html', 'images', 'extras'],
         'size', cb);
 });
