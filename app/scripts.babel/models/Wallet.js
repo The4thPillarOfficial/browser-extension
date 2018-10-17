@@ -33,6 +33,19 @@ export default class Wallet {
     }
 
     /**
+     * Method lock vault
+     *
+     * @returns {Promise<any>}
+     */
+    lock() {
+        return new Promise((resolve, reject) => {
+            this.vault.lock().then(() => {
+                resolve();
+            });
+        });
+    }
+
+    /**
      * Method generate 2048 bits RSA key
      */
     generateRsaKeyPair() {

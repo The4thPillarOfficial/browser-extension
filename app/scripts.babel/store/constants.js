@@ -11,3 +11,4 @@ export const SET_WEB3_PROVIDER = 'setEthProvider';
 export const SET_TOKEN = 'setToken';
 export const SET_DOCUMENT = 'setDocument';
 export const GENERATE_RSA_KEY_PAIR = 'generateRsaKeyPair';
+export const LOCK_WALLET = 'lockWallet';

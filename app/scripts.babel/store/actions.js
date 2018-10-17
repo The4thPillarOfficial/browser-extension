@@ -138,7 +138,6 @@ let actions = {
             state.wallet.vault.unlock(password).then((res) => {
                 dispatch(Actions.SET_WALLET, {
                     wallet: state.wallet,
-                    updateInLocalStorage: false
                 }).then(() => {
                     dispatch(Actions.SET_WEB3_PROVIDER).then(() => {
                         resolve();
@@ -239,6 +238,18 @@ let actions = {
         return new Promise((resolve, reject) => {
             wallet.generateRsaKeyPair();
             resolve(wallet);
+        });
+    },
+
+    [Actions.LOCK_WALLET]: ({state, dispatch}) => {
+        return new Promise((resolve, reject) => {
+            state.wallet.lock().then(() => {
+                dispatch(Actions.SET_WALLET, {
+                    wallet: state.wallet,
+                }).then(() => {
+                    resolve();
+                });
+            });
         });
     },
 };

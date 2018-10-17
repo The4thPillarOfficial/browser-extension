@@ -88,7 +88,10 @@ class Background {
      */
     static getDefaultAccount(sendResponse) {
         Background.loadWallet(wallet => {
-            sendResponse(wallet.defaultAccount);
+            if (wallet.vault.password) {
+                sendResponse(wallet.defaultAccount);
+            }
+            sendResponse(null);
         });
     }
 
