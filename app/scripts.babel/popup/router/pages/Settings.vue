@@ -7,6 +7,10 @@
             <div class="form-group">
                 <button class="btn" @click="logout">Log Out</button>
             </div>
+            <!-- Wallet Backup -->
+            <div class="form-group">
+                <button class="btn" @click="walletBackup">Wallet Backup</button>
+            </div>
         </div>
     </div>
 </template>
@@ -22,6 +26,9 @@
                 this[Actions.LOCK_WALLET]().then(() => {
                     this.$router.push({name: RouteNames.UNLOCK});
                 });
+            },
+            walletBackup() {
+                this.$router.push({name: RouteNames.WALLET_BACKUP});
             },
             ...mapActions([
                 Actions.LOCK_WALLET,

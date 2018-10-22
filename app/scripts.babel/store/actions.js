@@ -92,6 +92,48 @@ let actions = {
         });
     },
 
+    [Actions.GET_SEED_WORDS]: ({state}) => {
+        return new Promise(async (resolve, reject) => {
+
+            const primaryKeyring = state.wallet.vault.getKeyringsByType('HD Key Tree')[0];
+
+            if (!primaryKeyring) {
+                reject(new Error('No HD Key Tree found.'));
+            }
+
+            // Get seed words
+            const serialized = await primaryKeyring.serialize();
+            const seedWords = serialized.mnemonic;
+
+            // Get accounts
+            const accounts = await primaryKeyring.getAccounts();
+
+            if (accounts.length < 1) {
+                reject(new Error('No accounts found.'));
+            }
+
+            // Check if seed words correctly restore accounts
+            await Account.verifyAccounts(accounts, seedWords).then(() => {
+                resolve(seedWords);
+            }).catch((error) => {
+                console.error(error);
+            });
+        });
+    },
+
+    [Actions.GET_RSA_PRIVATE_KEY]: ({state}) => {
+        return new Promise(async (resolve, reject) => {
+
+            const rsaPrivateKey = state.wallet.rsaPrivateKey;
+
+            if (!rsaPrivateKey) {
+                reject(new Error('No RSA key found.'));
+            }
+
+            resolve(rsaPrivateKey);
+        });
+    },
+
     [Actions.RESTORE_WALLET]: ({state, dispatch}, {seedWords, password}) => {
         return new Promise(async (resolve, reject) => {
 
@@ -143,6 +185,17 @@ let actions = {
                         resolve();
                     });
                 });
+            }).catch((error) => {
+                dispatch(Actions.PUSH_ERROR, error.message);
+            });
+        });
+    },
+
+    [Actions.CHECK_WALLET_PASSWORD]: ({state, dispatch}, password) => {
+        return new Promise((resolve, reject) => {
+
+            state.wallet.vault.unlock(password).then((res) => {
+                resolve();
             }).catch((error) => {
                 dispatch(Actions.PUSH_ERROR, error.message);
             });

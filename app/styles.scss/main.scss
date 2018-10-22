@@ -57,6 +57,10 @@ input {
         font-weight: 700;
         margin-bottom: 20px;
     }
+    h2 {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
 }
 
 ul.main-menu {
@@ -151,9 +155,13 @@ ul.main-menu {
     font-weight: 300;
 }
 
-.seed-words {
+.seed-words,
+.rsa-private-key {
     background: #e8e8e8;
     padding: 10px;
+    margin-bottom: 15px;
+    overflow: auto;
+    max-height: 100px;
 
     ul {
         list-style: none;

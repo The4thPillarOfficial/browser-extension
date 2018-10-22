@@ -2,6 +2,7 @@ import EntryPage from './pages/Entry.vue';
 import ShowSeedWordsPage from './pages/ShowSeedWords.vue';
 import RestoreFromSeedWordsPage from './pages/RestoreFromSeedWords.vue';
 import UnlockPage from './pages/Unlock.vue';
+import WalletBackupPage from './pages/WalletBackup.vue';
 
 import MyAccountPage from './pages/Home.vue';
 import SendTokenPage from './pages/SendToken.vue';
@@ -16,6 +17,7 @@ export const RouteNames = {
     SHOW_SEED_WORDS: 'show-seed-words',
     RESTORE_FROM_SEED_WORDS: 'restore-from-seed-words',
     UNLOCK: 'unlock',
+    WALLET_BACKUP: 'wallet-backup',
 
     MY_ACCOUNT: 'my-account',
     SEND_TOKEN: 'send-token',
@@ -31,6 +33,7 @@ const RoutePages = {
     [RouteNames.SHOW_SEED_WORDS]: ShowSeedWordsPage,
     [RouteNames.RESTORE_FROM_SEED_WORDS]: RestoreFromSeedWordsPage,
     [RouteNames.UNLOCK]: UnlockPage,
+    [RouteNames.WALLET_BACKUP]: WalletBackupPage,
 
     [RouteNames.MY_ACCOUNT]: MyAccountPage,
     [RouteNames.SEND_TOKEN]: SendTokenPage,
