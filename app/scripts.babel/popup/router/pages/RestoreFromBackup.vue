@@ -4,16 +4,14 @@
             <div class="text-center p-b-30">
                 <img src="/images/assets/logo_dark.png"/>
             </div>
-            <h1>Restore from Seed Words</h1>
-            <!-- Enter seed words -->
+            <h1>Restore from Backup</h1>
+            <!-- Restore from file -->
+            <h2>Restore from file</h2>
             <div class="form-group">
-                <textarea v-model="seedWords" placeholder="Enter your secret twelve word phrase here to restore your vault."></textarea>
-            </div>
-            <!-- Enter RSA private key -->
-            <div class="form-group">
-                <textarea v-model="rsaPrivateKey" placeholder="Enter your secret RSA private key."></textarea>
+                <input type="file" @change="processFile($event)"/>
             </div>
             <!-- Password inputs -->
+            <h2>Set password</h2>
             <div class="form-group">
                 <input id="password" type="password" placeholder="New Password (min. 8 chars)" v-model="password"/>
                 <input id="passwordConfirmation" type="password" placeholder="Confirm Password" v-model="passwordConfirmation"/>
@@ -29,6 +27,10 @@
                 <button type="button" class="btn cancel" @click="cancel">Cancel</button>
                 <button type="submit" class="btn" @click="restore">Restore</button>
             </div>
+            <!-- Restore from seed words -->
+            <div class="form-group text-center f-upper">
+                <a @click="restoreFromSeedWords">Restore from seed words</a>
+            </div>
         </div>
     </div>
 </template>
@@ -43,8 +45,7 @@
     export default {
         data() {
             return {
-                seedWords: '',
-                rsaPrivateKey: null,
+                fileData: null,
                 password: '',
                 passwordConfirmation: '',
             }
@@ -55,36 +56,42 @@
             ])
         },
         methods: {
+            processFile(event) {
+                const self = this;
+                const reader = new FileReader();
+                reader.readAsText(event.target.files[0]);
+                reader.onload = function(e) {
+                    self.fileData = JSON.parse(e.target.result);
+                };
+            },
+            validateFile() {
+                if (!this.fileData) {
+                    this[Actions.PUSH_ERROR]('Empty file.');
+                    return false;
+                }
+
+                // Check seed words
+                this.fileData.seedWords = this.fileData.seedWords.replace(/\n/g, ' ');
+                if (Account.isValidSeedWords(this.fileData.seedWords, this)) {
+                    // Check RSA private key
+                    return Account.isValidRsaPrivateKey(this.fileData.rsaPrivateKey, this);
+                }
+
+                return false;
+            },
             restore() {
                 this[Actions.CLEAR_ERRORS]();
 
-                // Replace new lines with spaces
-                this.seedWords = this.seedWords.replace(/\n/g, ' ');
-
-                // Validate seed words
-                if (Account.isValidSeedWords(this.seedWords, this)) {
-
+                // Validate File
+                if (this.validateFile()) {
                     // Validate password
                     if (AuthenticationService.isValidPassword(this.password, this.passwordConfirmation, this)) {
-
-                        // Check RSA private key
-                        if (this.rsaPrivateKey) {
-                            if (Account.isValidRsaPrivateKey(this.rsaPrivateKey, this)) {
-                                // Restore wallet
-                                this[Actions.RESTORE_WALLET]({
-                                    seedWords: this.seedWords,
-                                    rsaPrivateKey: this.rsaPrivateKey,
-                                    password: this.password
-                                }).then(() => this.next());
-                            }
-                        } else {
-                            // Restore wallet
-                            this[Actions.RESTORE_WALLET]({
-                                seedWords: this.seedWords,
-                                rsaPrivateKey: this.rsaPrivateKey,
-                                password: this.password
-                            }).then(() => this.next());
-                        }
+                        // Restore wallet
+                        this[Actions.RESTORE_WALLET]({
+                            seedWords: this.fileData.seedWords,
+                            rsaPrivateKey: this.fileData.rsaPrivateKey,
+                            password: this.password
+                        }).then(() => this.next());
                     }
                 }
             },
@@ -94,6 +101,10 @@
             cancel() {
                 this[Actions.CLEAR_ERRORS]();
                 this.$router.back();
+            },
+            restoreFromSeedWords() {
+                this[Actions.CLEAR_ERRORS]();
+                this.$router.push({name: RouteNames.RESTORE_FROM_SEED_WORDS});
             },
             ...mapActions([
                 Actions.PUSH_ERROR,

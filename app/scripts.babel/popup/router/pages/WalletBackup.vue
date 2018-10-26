@@ -87,7 +87,7 @@
                 return this.seedWords ? this.seedWords.split(' ') : [];
             },
             goBack() {
-                this.$router.push({name: RouteNames.SETTINGS});
+                this.$router.back();
             },
             saveAsFile() {
                 const data = {

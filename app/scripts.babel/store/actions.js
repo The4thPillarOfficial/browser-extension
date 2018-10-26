@@ -134,11 +134,13 @@ let actions = {
         });
     },
 
-    [Actions.RESTORE_WALLET]: ({state, dispatch}, {seedWords, password}) => {
+    [Actions.RESTORE_WALLET]: ({state, dispatch}, {seedWords, rsaPrivateKey, password}) => {
         return new Promise(async (resolve, reject) => {
 
             // Restore wallet
             const wallet = new Wallet(state.wallet);
+            wallet.rsaPrivateKey = rsaPrivateKey;
+            
             await wallet.vault.restore(password, seedWords).then(() => {
                 dispatch(Actions.SET_WALLET, {wallet: wallet}).then(() => {
                     dispatch(Actions.SET_WEB3_PROVIDER).then(() => {

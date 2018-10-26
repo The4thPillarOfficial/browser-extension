@@ -20,9 +20,9 @@
             <div class="form-group text-center">
                 <button type="submit" class="btn" @click="create">Create</button>
             </div>
-            <!-- Restore from seed words -->
+            <!-- Restore from Backup -->
             <div class="form-group text-center f-upper">
-                <a @click="restoreFromSeedWords">Restore from seed words</a>
+                <a @click="restoreFromBackup">Restore from Backup</a>
             </div>
         </div>
     </div>
@@ -65,9 +65,9 @@
                     this.$router.push({name: RouteNames.MY_ACCOUNT});
                 }
             },
-            restoreFromSeedWords() {
+            restoreFromBackup() {
                 this[Actions.CLEAR_ERRORS]();
-                this.$router.push({name: RouteNames.RESTORE_FROM_SEED_WORDS});
+                this.$router.push({name: RouteNames.RESTORE_FROM_BACKUP});
             },
             ...mapActions([
                 Actions.PUSH_ERROR,

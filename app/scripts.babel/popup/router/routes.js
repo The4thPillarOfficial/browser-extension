@@ -1,5 +1,6 @@
 import EntryPage from './pages/Entry.vue';
 import ShowSeedWordsPage from './pages/ShowSeedWords.vue';
+import RestoreFromBackupPage from './pages/RestoreFromBackup.vue';
 import RestoreFromSeedWordsPage from './pages/RestoreFromSeedWords.vue';
 import UnlockPage from './pages/Unlock.vue';
 import WalletBackupPage from './pages/WalletBackup.vue';
@@ -15,6 +16,7 @@ import RequestPersonalMessageSignature from './pages/prompts/RequestPersonalMess
 export const RouteNames = {
     ENTRY: 'entry',
     SHOW_SEED_WORDS: 'show-seed-words',
+    RESTORE_FROM_BACKUP: 'restore-from-backup',
     RESTORE_FROM_SEED_WORDS: 'restore-from-seed-words',
     UNLOCK: 'unlock',
     WALLET_BACKUP: 'wallet-backup',
@@ -31,6 +33,7 @@ export const RouteNames = {
 const RoutePages = {
     [RouteNames.ENTRY]: EntryPage,
     [RouteNames.SHOW_SEED_WORDS]: ShowSeedWordsPage,
+    [RouteNames.RESTORE_FROM_BACKUP]: RestoreFromBackupPage,
     [RouteNames.RESTORE_FROM_SEED_WORDS]: RestoreFromSeedWordsPage,
     [RouteNames.UNLOCK]: UnlockPage,
     [RouteNames.WALLET_BACKUP]: WalletBackupPage,

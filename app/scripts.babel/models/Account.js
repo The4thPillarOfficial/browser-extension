@@ -1,4 +1,5 @@
 import Vault from 'mm-vault';
+import NodeRSA from 'node-rsa';
 import * as Actions from '../store/constants';
 
 export default class Account {
@@ -62,5 +63,27 @@ export default class Account {
         }
 
         return true;
+    }
+
+    /**
+     * Method checks if RSA private key is valid
+     *
+     * @param rsaPrivateKey
+     * @param context
+     * @returns {boolean}
+     */
+    static isValidRsaPrivateKey(rsaPrivateKey, context) {
+        try {
+            const key = new NodeRSA(rsaPrivateKey);
+
+            if (!key && key.getKeySize() !== 2048) {
+                context[Actions.PUSH_ERROR]('RSA private key is not valid.');
+                return false;
+            }
+            return true;
+
+        } catch (error) {
+            context[Actions.PUSH_ERROR]('RSA private key is not valid.');
+        }
     }
 }
