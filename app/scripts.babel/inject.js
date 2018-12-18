@@ -24,7 +24,7 @@ class Inject {
                 // Set default account
                 web3.eth.defaultAccount = msg.payload.defaultAccount;
 
-                global.web3 = new Proxy(web3, {
+                window.the4thPillarExtension = new Proxy(web3, {
                     get: (_web3, key) => {
                         return _web3[key];
                     },

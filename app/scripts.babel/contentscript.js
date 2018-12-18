@@ -30,6 +30,8 @@ class Content {
             stream.send(NetworkMessage.payload(NetworkMessageTypes.PUSH_THE4THPILLAR, {defaultAccount, defaultNetwork}), PairingTags.INJECTED);
 
             isReady = true;
+
+            document.dispatchEvent(new CustomEvent('the4thPillarExtensionLoaded'));
         });
     }
 
