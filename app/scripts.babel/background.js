@@ -88,7 +88,7 @@ class Background {
      */
     static getDefaultAccount(sendResponse) {
         Background.loadWallet(wallet => {
-            if (wallet.vault.password) {
+            if (wallet && wallet.vault.password) {
                 sendResponse(wallet.defaultAccount);
             }
             sendResponse(null);
@@ -102,7 +102,9 @@ class Background {
      */
     static getDefaultNetwork(sendResponse) {
         Background.loadWallet(wallet => {
-            sendResponse(wallet.settings.defaultNetwork);
+            if (wallet) {
+                sendResponse(wallet.settings.defaultNetwork);
+            }
         });
     }
 
