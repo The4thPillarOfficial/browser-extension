@@ -30,6 +30,7 @@
   },
   "permissions": [
     "storage",
+    "unlimitedStorage",
     "downloads"
   ],
   "content_scripts": [
