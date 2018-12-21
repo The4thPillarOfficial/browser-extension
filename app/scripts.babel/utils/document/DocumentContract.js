@@ -84,22 +84,26 @@ export default class DocumentContract {
             }
 
             for (let i = from; i <= to; i++) {
-                const document = await this.getDocument(receiver, i);
+                try {
+                    const document = await this.getDocument(receiver, i);
 
-                // If document is not deleted
-                if (document[1]) {
-                    documents.push({
-                        sender: document[0],
-                        link: document[1],
-                        name: document[2],
-                        description: document[3],
-                        docType: document[4],
-                        openedAt: document[5],
-                    });
+                    // If document is not deleted
+                    if (document[1]) {
+                        documents.push({
+                            sender: document[0],
+                            link: document[1],
+                            name: document[2],
+                            description: document[3],
+                            docType: document[4],
+                            openedAt: document[5],
+                        });
+                    }
+                } catch (err) {
+                    // Document not exists
                 }
             }
         } catch (err) {
-            console.error(err);
+            console.error(err.message);
         }
 
         return documents;
