@@ -75,4 +75,18 @@ export default class EthService {
             });
         }
     }
+
+    static newUnsignedPersonalMessageArray(msgParams, cb) {
+        if (!msgParams.from) {
+            return cb(new Error('The4thPillar browser extension Message Signature: from field is required.'))
+        }
+
+        if (!Array.isArray(msgParams.data)) {
+            return cb(new Error('The4thPillar browser extension Message Signature: data field must be array.'))
+        }
+
+        NetworkMessageService.send(stream, NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY, msgParams).then(res => {
+            cb(null, res);
+        });
+    }
 }

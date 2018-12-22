@@ -48,6 +48,10 @@ class Background {
                 Background.requestPersonalMessageSignature(message.payload, sendResponse);
                 break;
 
+            case InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY:
+                Background.requestPersonalMessageSignatureArray(message.payload, sendResponse);
+                break;
+
             case InternalMessageTypes.SET_PROMPT:
                 Background.setPrompt(message.payload, sendResponse);
                 break;
@@ -117,6 +121,18 @@ class Background {
     static requestPersonalMessageSignature(payload, sendResponse) {
         Background.loadWallet(wallet => {
             SignatureService.signPersonalMessage(wallet, payload, sendResponse);
+        });
+    }
+
+    /**
+     * Return signed personal message array
+     *
+     * @param payload
+     * @param sendResponse
+     */
+    static requestPersonalMessageSignatureArray(payload, sendResponse) {
+        Background.loadWallet(wallet => {
+            SignatureService.signPersonalMessageArray(wallet, payload, sendResponse);
         });
     }
 

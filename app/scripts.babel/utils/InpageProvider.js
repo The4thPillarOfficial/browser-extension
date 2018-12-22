@@ -74,4 +74,25 @@ export default class InpageProvider {
     isConnected() {
         return true;
     }
+
+    /**
+     * Handle personal sign where data is array
+     *
+     * @param data
+     * @param from
+     * @returns {Promise<any>}
+     */
+    personalSignArray(data, from) {
+        return new Promise((resolve, reject) => {
+            const payload = {
+                from: from,
+                data: data,
+            };
+
+            EthService.newUnsignedPersonalMessageArray(payload, (err, signature) => {
+                if (err) reject(err);
+                resolve(signature);
+            });
+        });
+    }
 }

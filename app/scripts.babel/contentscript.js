@@ -71,6 +71,10 @@ class Content {
             case NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE:
                 Content.requestPersonalMessageSignature(nonSyncMessage);
                 break;
+
+            case NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY:
+                Content.requestPersonalMessageSignatureArray(nonSyncMessage);
+                break;
         }
     }
 
@@ -131,6 +135,17 @@ class Content {
      */
     static requestPersonalMessageSignature(message) {
         InternalMessage.payload(InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE, message.payload).send().then(res => {
+            this.respond(message, res);
+        });
+    }
+
+    /**
+     * Method return signed personal message array
+     *
+     * @param message
+     */
+    static requestPersonalMessageSignatureArray(message) {
+        InternalMessage.payload(InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY, message.payload).send().then(res => {
             this.respond(message, res);
         });
     }
