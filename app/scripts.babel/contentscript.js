@@ -75,6 +75,10 @@ class Content {
             case NetworkMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY:
                 Content.requestPersonalMessageSignatureArray(nonSyncMessage);
                 break;
+
+            case NetworkMessageTypes.REQUEST_FILE_DOWNLOAD:
+                Content.requestFileDownload(nonSyncMessage);
+                break;
         }
     }
 
@@ -146,6 +150,17 @@ class Content {
      */
     static requestPersonalMessageSignatureArray(message) {
         InternalMessage.payload(InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY, message.payload).send().then(res => {
+            this.respond(message, res);
+        });
+    }
+
+    /**
+     * Method trigger file download
+     *
+     * @param message
+     */
+    static requestFileDownload(message) {
+        InternalMessage.payload(InternalMessageTypes.REQUEST_FILE_DOWNLOAD, message.payload).send().then(res => {
             this.respond(message, res);
         });
     }

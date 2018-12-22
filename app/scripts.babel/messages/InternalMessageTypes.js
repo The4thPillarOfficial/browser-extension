@@ -4,5 +4,6 @@ export const GET_DEFAULT_ACCOUNT = 'getDefaultAccount';
 export const GET_DEFAULT_NETWORK = 'getDefaultNetwork';
 export const REQUEST_PERSONAL_MESSAGE_SIGNATURE = 'requestPersonalMessageSignature';
 export const REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY = 'requestPersonalMessageSignatureArray';
+export const REQUEST_FILE_DOWNLOAD = 'requestFileDownload';
 export const SET_PROMPT = 'setPrompt';
 export const GET_PROMPT = 'getPrompt';

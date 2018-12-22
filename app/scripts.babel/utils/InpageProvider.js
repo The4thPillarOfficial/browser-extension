@@ -1,5 +1,6 @@
 import NetworkMessageService from '../services/NetworkMessageService';
 import EthService from '../services/EthService';
+import * as NetworkMessageTypes from '../messages/NetworkMessageTypes';
 
 let stream = null;
 let opts = null;
@@ -92,6 +93,23 @@ export default class InpageProvider {
             EthService.newUnsignedPersonalMessageArray(payload, (err, signature) => {
                 if (err) reject(err);
                 resolve(signature);
+            });
+        });
+    }
+
+    /**
+     * Handle file download from platform
+     *
+     * @param url
+     */
+    downloadFile(url) {
+        return new Promise((resolve, reject) => {
+            if (!url) {
+                return reject(new Error('The4thPillar browser extension document download: url is required.'))
+            }
+
+            NetworkMessageService.send(stream, NetworkMessageTypes.REQUEST_FILE_DOWNLOAD, url).then(res => {
+                resolve(res);
             });
         });
     }

@@ -2,6 +2,7 @@ import {LocalStream} from 'extension-streams';
 import * as InternalMessageTypes from './messages/InternalMessageTypes';
 import StorageService from './services/StorageService';
 import SignatureService from './services/SignatureService';
+import DocumentService from './services/DocumentService';
 
 let prompt = null;
 
@@ -50,6 +51,10 @@ class Background {
 
             case InternalMessageTypes.REQUEST_PERSONAL_MESSAGE_SIGNATURE_ARRAY:
                 Background.requestPersonalMessageSignatureArray(message.payload, sendResponse);
+                break;
+
+            case InternalMessageTypes.REQUEST_FILE_DOWNLOAD:
+                Background.requestFileDownload(message.payload, sendResponse);
                 break;
 
             case InternalMessageTypes.SET_PROMPT:
@@ -133,6 +138,18 @@ class Background {
     static requestPersonalMessageSignatureArray(payload, sendResponse) {
         Background.loadWallet(wallet => {
             SignatureService.signPersonalMessageArray(wallet, payload, sendResponse);
+        });
+    }
+
+    /**
+     * Return file download response
+     *
+     * @param payload
+     * @param sendResponse
+     */
+    static requestFileDownload(payload, sendResponse) {
+        Background.loadWallet(wallet => {
+            DocumentService.downloadFile(payload, wallet.rsaPrivateKey, sendResponse);
         });
     }
 
