@@ -32,18 +32,14 @@ export default class TokenContract {
      * Method return number of FOUR tokens for a given ETH
      *
      * @param eth
-     * @returns {number}
+     * @returns {Promise<any>}
      */
     static getTokensFromEther(eth) {
-        // TODO:: get conversion from ETH/FOUR when token arrive on market
-
-        // Assume that ETH price is 400€
-        let euroEth = 400;
-
-        // Assume that FOUR price is 0.1€
-        let euroFour = 0.1;
-
-        return (euroEth / euroFour) * eth;
+        return new Promise((resolve, reject) => {
+            axios.get(Helper.PLATFORM_BASE_URL + '/transaction/getFourTokenValueInEth').then(res => {
+                resolve(eth / res.data)
+            }).catch(err => reject(err));
+        });
     };
 
     /**
@@ -85,9 +81,9 @@ export default class TokenContract {
      * Method return estimated transaction fee in FOUR tokens
      *
      * @param to
-     * @returns {number}
+     * @returns {Promise<number>}
      */
-    static estimateTransactionFee(to) {
+    static async estimateTransactionFee(to) {
 
         let transfers = 1;
 
@@ -102,7 +98,7 @@ export default class TokenContract {
         let txCostEth = store.getters.web3.fromWei(gasUnits * TokenContract.getGasPrice(), 'ether');
 
         // Return FOUR fee * 2
-        return TokenContract.getTokensFromEther(txCostEth) * 2;
+        return await TokenContract.getTokensFromEther(txCostEth) * 2;
     };
 
     /**

@@ -81,7 +81,9 @@
                 }
             },
             calculateFee() {
-                this.transactionFee = TokenContract.estimateTransactionFee(this.to);
+                TokenContract.estimateTransactionFee(this.to).then(res => {
+                    this.transactionFee = res;
+                });
             },
             send() {
                 this.validateForm();
