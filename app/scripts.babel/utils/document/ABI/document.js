@@ -176,6 +176,45 @@ const ABI = [
         'type': 'function'
     },
     {
+        'constant': false,
+        'inputs': [
+            {
+                'name': 'receiver',
+                'type': 'address'
+            },
+            {
+                'name': 'index',
+                'type': 'uint256'
+            },
+            {
+                'name': 'nonce',
+                'type': 'uint256'
+            },
+            {
+                'name': 'v',
+                'type': 'uint8'
+            },
+            {
+                'name': 'r',
+                'type': 'bytes32'
+            },
+            {
+                'name': 's',
+                'type': 'bytes32'
+            }
+        ],
+        'name': 'setPreSignedOpenedAt',
+        'outputs': [
+            {
+                'name': '',
+                'type': 'bool'
+            }
+        ],
+        'payable': false,
+        'stateMutability': 'nonpayable',
+        'type': 'function'
+    },
+    {
         'anonymous': false,
         'inputs': [
             {
@@ -317,45 +356,6 @@ const ABI = [
         ],
         'name': 'DeleteDocument',
         'type': 'event'
-    },
-    {
-        'constant': false,
-        'inputs': [
-            {
-                'name': 'receiver',
-                'type': 'address'
-            },
-            {
-                'name': 'index',
-                'type': 'uint256'
-            },
-            {
-                'name': 'nonce',
-                'type': 'uint256'
-            },
-            {
-                'name': 'v',
-                'type': 'uint8'
-            },
-            {
-                'name': 'r',
-                'type': 'bytes32'
-            },
-            {
-                'name': 's',
-                'type': 'bytes32'
-            }
-        ],
-        'name': 'setPreSignedOpenedAt',
-        'outputs': [
-            {
-                'name': '',
-                'type': 'bool'
-            }
-        ],
-        'payable': false,
-        'stateMutability': 'nonpayable',
-        'type': 'function'
     },
     {
         'constant': true,
