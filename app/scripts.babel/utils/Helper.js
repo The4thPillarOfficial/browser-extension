@@ -21,5 +21,5 @@ export default class Helper {
     }
 }
 
-Helper.FEE_TAKER_ADDRESS = '0xA47b2173EC9Ed52f095174266F581567964dbF85';
+Helper.FEE_TAKER_ADDRESS = '0x8D5c28D6B290343697609B26dcA019b794860D1B';
 Helper.PLATFORM_BASE_URL = 'https://www.the4thpillar.com';

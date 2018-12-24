@@ -31,7 +31,8 @@
   "permissions": [
     "storage",
     "unlimitedStorage",
-    "downloads"
+    "downloads",
+    "activeTab"
   ],
   "content_scripts": [
     {

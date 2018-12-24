@@ -1,4 +1,4 @@
-const address = '0xDB20FbA759aD59b0F13154927A18eC2c872b2845';  // TODO: implement production address
+const address = '0x4730fB1463A6F1F44AEB45F6c5c422427f37F4D0';
 const ABI = [{
     'constant': false,
     'inputs': [{'name': '_from', 'type': 'address[]'}, {

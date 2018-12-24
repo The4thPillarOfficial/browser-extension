@@ -1,4 +1,4 @@
-const address = '0x5cF9277117466BCf6A37F71947eb93565720AA06';  // TODO: implement production address
+const address = '0x18Bbc3B586508ce74a430aFb1B1B7F62815594FA';
 const ABI = [
     {
         'constant': false,
