@@ -37,8 +37,10 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*",
-        "https://*/*"
+        "http://the4thpillar.com/*",
+        "https://the4thpillar.com/*",
+        "http://*.the4thpillar.com/*",
+        "https://*.the4thpillar.com/*"
       ],
       "js": [
         "scripts/contentscript.js"
