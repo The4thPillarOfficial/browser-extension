@@ -280,10 +280,17 @@ let actions = {
             let documentValues = {};
             documentValues.instance = document;
 
-            document.getDocumentsInRange(state.wallet.defaultAccount, 0).then(documents => {
-                documentValues.documents = documents.reverse();
+            documentValues.documents = [];
 
-                commit(Actions.SET_DOCUMENT, documentValues);
+            commit(Actions.SET_DOCUMENT, documentValues);
+            resolve();
+        });
+    },
+
+    [Actions.SET_DOCUMENTS]: ({state, commit}) => {
+        return new Promise(async (resolve, reject) => {
+            state.document.instance.getDocumentsInRange(state.wallet.defaultAccount, 0).then(documents => {
+                commit(Actions.SET_DOCUMENTS, documents.reverse());
                 resolve();
             });
         });

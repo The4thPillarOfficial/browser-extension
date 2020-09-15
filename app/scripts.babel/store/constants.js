@@ -11,6 +11,7 @@ export const PUSH_PROMPT = 'pushPrompt';
 export const SET_WEB3_PROVIDER = 'setEthProvider';
 export const SET_TOKEN = 'setToken';
 export const SET_DOCUMENT = 'setDocument';
+export const SET_DOCUMENTS = 'setDocuments';
 export const GENERATE_RSA_KEY_PAIR = 'generateRsaKeyPair';
 export const GET_RSA_PRIVATE_KEY = 'getRsaKey';
 export const LOCK_WALLET = 'lockWallet';

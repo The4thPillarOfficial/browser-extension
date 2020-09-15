@@ -17,6 +17,9 @@ let mutations = {
         state.document.instance = document.instance;
         state.document.documents = document.documents;
     },
+    [Mutations.SET_DOCUMENTS]: (state, documents) => {
+        state.document.documents = documents;
+    },
 };
 
 export default mutations;
