@@ -1,4 +1,6 @@
 import {address, ABI} from './ABI/document';
+import store from '../../store';
+import axios from 'axios';
 
 export default class DocumentContract {
 
@@ -43,18 +45,18 @@ export default class DocumentContract {
     }
 
     /**
-     * Method return last document index
+     * Method returns the number of documents for the given receiver
      *
      * @param receiver
      * @returns {Promise<any>}
      */
-    getLastDocumentIndex(receiver) {
+    getDocumentsCount(receiver) {
         return new Promise((resolve, reject) => {
-            this.contract.getLastDocumentIndex(receiver, (err, lastDocumentIndex) => {
+            this.contract.getDocumentsCount(receiver, (err, getDocumentsCount) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(lastDocumentIndex);
+                    resolve(getDocumentsCount);
                 }
             });
         });
@@ -72,15 +74,21 @@ export default class DocumentContract {
         let documents = [];
 
         try {
-            let lastDocumentIndex = await this.getLastDocumentIndex(receiver);
+            const numOfDocuments = await this.getDocumentsCount(receiver);
 
-            // Check if range is not exceeded
-            if (to > lastDocumentIndex || to === null) {
-                to = lastDocumentIndex;
+            if (!numOfDocuments) {
+                return;
             }
 
+            let lastDocumentIndex = numOfDocuments - 1;
+
+            // Check if range is not exceeded
             if (from > lastDocumentIndex) {
                 from = lastDocumentIndex;
+            }
+
+            if (to > lastDocumentIndex || to === null) {
+                to = lastDocumentIndex;
             }
 
             for (let i = from; i <= to; i++) {
@@ -89,23 +97,44 @@ export default class DocumentContract {
 
                     // If document is not deleted
                     if (document[1]) {
+                        const metadata = this.extractMetadata(document[1]);
+                        const documentInfo = await this.retrieveMetadataInfo(metadata.url);
+
                         documents.push({
+                            index: i,
                             sender: document[0],
-                            link: document[1],
-                            name: document[2],
-                            description: document[3],
-                            docType: document[4],
-                            openedAt: document[5],
+                            link: documentInfo.link,
+                            name: documentInfo.name,
+                            description: documentInfo.description,
+                            docType: documentInfo.docType,
+                            checksum: documentInfo.checksum,
+                            sentAt: document[2],
+                            openedAt: document[3],
+                            metadata: metadata,
                         });
                     }
                 } catch (err) {
-                    // Document not exists
+                    console.error(err);
                 }
             }
         } catch (err) {
-            console.error(err.message);
+            console.error(err);
         }
 
         return documents;
+    }
+
+    extractMetadata(metadata) {
+        const metadataBundle = store.state.web3.toUtf8(metadata);
+
+        return {
+            checksum: metadataBundle.slice(0, 64),
+            url: metadataBundle.slice(64, metadataBundle.length),
+        };
+    }
+
+    async retrieveMetadataInfo(url) {
+        const res = await axios.get(url);
+        return res.data;
     }
 }
